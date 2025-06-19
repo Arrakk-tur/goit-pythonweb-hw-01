@@ -1,14 +1,20 @@
+import logging
 from abc import ABC, abstractmethod
 from typing import List
 
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
+
 
 class Book:
-    def __init__(self, title: str, author: str, year: str):
-        self.title = title
-        self.author = author
-        self.year = year
+    def __init__(self, title: str, author: str, year: str) -> None:
+        self.title: str = title
+        self.author: str = author
+        self.year: str = year
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.title} by {self.author} ({self.year})"
 
 
@@ -27,7 +33,7 @@ class LibraryInterface(ABC):
 
 
 class Library(LibraryInterface):
-    def __init__(self):
+    def __init__(self) -> None:
         self._books: List[Book] = []
 
     def add_book(self, book: Book) -> None:
@@ -45,32 +51,32 @@ class Library(LibraryInterface):
 
 
 class LibraryManager:
-    def __init__(self, library: LibraryInterface):
-        self.library = library
+    def __init__(self, library: LibraryInterface) -> None:
+        self.library: LibraryInterface = library
 
     def add_book(self, title: str, author: str, year: str) -> None:
         book = Book(title, author, year)
         self.library.add_book(book)
-        print("Book added successfully.")
+        logger.info("Book added: %s", book)
 
     def remove_book(self, title: str) -> None:
         if self.library.remove_book(title):
-            print("Book removed successfully.")
+            logger.info("Book removed: %s", title)
         else:
-            print("Book not found.")
+            logger.info("Book not found: %s", title)
 
     def show_books(self) -> None:
         books = self.library.get_books()
         if not books:
-            print("No books in library.")
+            logger.info("No books in library.")
         else:
-            print("Books in library:")
+            logger.info("Books in library:")
             for book in books:
-                print(f"- {book}")
+                logger.info("- %s", book)
 
 
-def main():
-    library = Library()
+def main() -> None:
+    library: LibraryInterface = Library()
     manager = LibraryManager(library)
 
     while True:
@@ -90,7 +96,7 @@ def main():
             case "exit":
                 break
             case _:
-                print("Invalid command. Please try again.")
+                logger.info("Invalid command. Please try again.")
 
 
 if __name__ == "__main__":
