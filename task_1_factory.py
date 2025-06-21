@@ -1,11 +1,7 @@
 from abc import ABC, abstractmethod
-import logging
 from typing import Protocol
 
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-)
-logger = logging.getLogger(__name__)
+from own_logger import my_logger
 
 
 # 1. Абстрактний базовий клас Vehicle
@@ -23,12 +19,12 @@ class Vehicle(ABC):
 # 2. Класи Car і Motorcycle, що наслідують Vehicle
 class Car(Vehicle):
     def start_engine(self) -> None:
-        logger.info(f"{self.make} {self.model} ({self.region_spec}): Двигун запущено")
+        my_logger.info(f"{self.make} {self.model} ({self.region_spec}): Двигун запущено")
 
 
 class Motorcycle(Vehicle):
     def start_engine(self) -> None:
-        logger.info(f"{self.make} {self.model} ({self.region_spec}): Мотор заведено")
+        my_logger.info(f"{self.make} {self.model} ({self.region_spec}): Мотор заведено")
 
 
 # 3. Протокол для VehicleFactory (альтернатива абстрактному класу з кращою підтримкою типів)
